@@ -158,6 +158,10 @@
             box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
 
+        .btn:active {
+            transform: translateY(0);
+        }
+
         .btn-outline {
             background: transparent;
             color: var(--green);
@@ -333,6 +337,45 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay-btn {
+            background: var(--gold);
+            color: var(--green);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-overlay-btn:hover {
+            background: #c9a02a;
+            transform: scale(1.05);
         }
 
         /* Certificates Section */
@@ -655,6 +698,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            z-index: 1001;
         }
 
         .modal-close:hover {
@@ -740,6 +784,33 @@
             font-size: 14px;
         }
 
+        /* View More Button Overlay */
+        .view-more-btn {
+            background: var(--gold);
+            color: var(--green);
+            padding: 12px 28px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .view-more-btn:hover {
+            background: #c9a02a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .view-more-btn:active {
+            transform: translateY(0);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             header h1 {
@@ -773,11 +844,13 @@
 
             .btn-group {
                 gap: 12px;
+                flex-direction: column;
             }
 
             .btn {
                 padding: 12px 28px;
                 font-size: 14px;
+                width: 100%;
             }
 
             .section-title {
@@ -831,6 +904,15 @@
             .division-tabs {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .gallery-overlay {
+                opacity: 1;
+            }
+
+            .gallery-overlay-btn {
+                padding: 10px 20px;
+                font-size: 12px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -871,6 +953,10 @@
             }
 
             .division-tabs {
+                grid-template-columns: 1fr;
+            }
+
+            .service-cards-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -914,22 +1000,22 @@
                 <h3 style="color: var(--green); margin-bottom: 12px; font-size: 20px;">Multi-Division Services</h3>
                 <p>Five integrated agricultural divisions meeting all your farming and agro-business needs in one trusted partner.</p>
             </div>
-            <div style="background: white; padding: 30px; border-radius: 12px; border-left: 4px solid var(--gold); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-                <h3 style="color: var(--green); margin-bottom: 12px; font-size: 20px;">NAFDAC Registered</h3>
-                <p>All products meet Nigerian food standards and regulatory requirements for quality assurance.</p>
-            </div>
+
             <div style="background: white; padding: 30px; border-radius: 12px; border-left: 4px solid var(--gold); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
                 <h3 style="color: var(--green); margin-bottom: 12px; font-size: 20px;">Nationwide Coverage</h3>
                 <p>Operations across Badagry (Lagos), Ogun State, Ondo State, and nationwide rice milling machine distribution.</p>
             </div>
+
             <div style="background: white; padding: 30px; border-radius: 12px; border-left: 4px solid var(--gold); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
                 <h3 style="color: var(--green); margin-bottom: 12px; font-size: 20px;">Professional Support</h3>
                 <p>Experienced teams provide technical guidance, training, and ongoing support for all services.</p>
             </div>
+
             <div style="background: white; padding: 30px; border-radius: 12px; border-left: 4px solid var(--gold); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
                 <h3 style="color: var(--green); margin-bottom: 12px; font-size: 20px;">Flexible Solutions</h3>
                 <p>Customized packages for bulk orders, rentals, leasing, and farming partnerships tailored to your needs.</p>
             </div>
+
             <div style="background: white; padding: 30px; border-radius: 12px; border-left: 4px solid var(--gold); box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
                 <h3 style="color: var(--green); margin-bottom: 12px; font-size: 20px;">Compliance Certified</h3>
                 <p>All necessary regulatory credentials and business certifications ensuring legal protection and accountability.</p>
@@ -944,26 +1030,45 @@
                 <i class="fas fa-leaf" style="font-size: 32px; color: var(--gold); margin-bottom: 12px;"></i>
                 <h3>Soybean Products</h3>
                 <p>Crude soybean oil and high-protein meal for livestock feed and industrial use. Badagry, Lagos.</p>
+                <button class="view-more-btn" onclick="showPage('divisions')">
+                    <i class="fas fa-arrow-right"></i> Learn More
+                </button>
             </div>
+
             <div class="service-card-item">
                 <i class="fas fa-tractor" style="font-size: 32px; color: var(--gold); margin-bottom: 12px;"></i>
                 <h3>Tractor Rentals</h3>
                 <p>Land clearing, plowing, and harrowing services with professional operators. Ogun State.</p>
+                <button class="view-more-btn" onclick="showPage('divisions')">
+                    <i class="fas fa-arrow-right"></i> Learn More
+                </button>
             </div>
+
             <div class="service-card-item">
                 <i class="fas fa-tree" style="font-size: 32px; color: var(--gold); margin-bottom: 12px;"></i>
                 <h3>Palm Fruits</h3>
                 <p>Fresh Grade A palm fruits for commercial oil extraction. Ondo State sourcing.</p>
+                <button class="view-more-btn" onclick="showPage('divisions')">
+                    <i class="fas fa-arrow-right"></i> Learn More
+                </button>
             </div>
+
             <div class="service-card-item">
                 <i class="fas fa-cogs" style="font-size: 32px; color: var(--gold); margin-bottom: 12px;"></i>
                 <h3>Rice Milling Machines</h3>
                 <p>Sales, installation, and technical training for rice processing equipment. Nationwide.</p>
+                <button class="view-more-btn" onclick="showPage('divisions')">
+                    <i class="fas fa-arrow-right"></i> Learn More
+                </button>
             </div>
+
             <div class="service-card-item">
                 <i class="fas fa-home" style="font-size: 32px; color: var(--gold); margin-bottom: 12px;"></i>
                 <h3>Pig Farming</h3>
                 <p>Quality breeding stock and comprehensive farm management training. Lagos State.</p>
+                <button class="view-more-btn" onclick="showPage('divisions')">
+                    <i class="fas fa-arrow-right"></i> Learn More
+                </button>
             </div>
         </div>
     </section>
@@ -1119,7 +1224,7 @@
 
                 <div class="service-card">
                     <div class="service-image">
-                        <img src="Images/palm-2.jpg" alt="Palm Oil Production">
+                        <img src="Images/palm-2.jpg" alt="Palm Oil product distribution">
                     </div>
                     <div class="service-header">
                         <h3>Bulk Supply</h3>
@@ -1262,16 +1367,35 @@
         <div class="gallery">
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/Jerry-can.jpg" alt="Soybean Oil">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/Jar.jpg" alt="Soybean Oil Packaging">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/Jar2.jpg" alt="Soybean Oil Packaging">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
-
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/meal-1.jpg" alt="Soybean Meal">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1279,12 +1403,27 @@
         <div class="gallery">
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/tractor-1.jpg" alt="Tractor Plowing">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/tractor-2.jpg" alt="Land Preparation">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/tractor-3.jpg" alt="Heavy Equipment">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1292,12 +1431,27 @@
         <div class="gallery">
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/palm-1.jpg" alt="Palm Fruits">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/rice-mill-1.jpg" alt="Rice Milling Machine">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/pig-1.jpg" alt="Pig Farm">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -1305,12 +1459,27 @@
         <div class="gallery">
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/facility-1.jpg" alt="Badagry Facility">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/facility-2.jpg" alt="Storage and Equipment">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
             <div class="gallery-item" onclick="openModal(this)">
                 <img src="Images/facility-3.jpg" alt="Operations Center">
+                <div class="gallery-overlay">
+                    <button class="gallery-overlay-btn">
+                        <i class="fas fa-expand"></i> View
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -1431,8 +1600,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="subject">Specific Request / Quantity *</label>
-                        <input type="text" id="subject" name="subject"
-                            placeholder="Example: 10 jerry cans oil, tractor rental 5 days" required>
+                        <input type="text" id="subject" name="subject" placeholder="Example: 10 jerry cans oil, tractor rental 5 days" required>
                     </div>
                     <div class="form-group">
                         <label for="location">Your Location (Town/State) *</label>
@@ -1498,7 +1666,7 @@
                 <div class="contact-info-item">
                     <i class="fas fa-envelope"></i>
                     <p><strong>Email</strong></p>
-                    <p><a href="mailto:derek@derashconsultinc.com">info@ashderfandaa.com</a></p>
+                    <p><a href="mailto:info@ashderfandaa.com">info@ashderfandaa.com</a></p>
                     <p style="font-size: 14px; margin-top: 8px;"><em>Response within 24 hours</em></p>
                 </div>
             </div>
@@ -1659,15 +1827,15 @@
     }
 
     const successMsg = document.getElementById('successMsg');
-        const errorMsg = document.getElementById('errorMsg');
+    const errorMsg = document.getElementById('errorMsg');
 
-        if (window.location.search.includes('success')) {
-            successMsg.style.display = 'block';
-            setTimeout(function () {
-                successMsg.style.display = 'none';
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }, 5000);
-        }
+    if (window.location.search.includes('success')) {
+        successMsg.style.display = 'block';
+        setTimeout(function () {
+            successMsg.style.display = 'none';
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }, 5000);
+    }
 
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
